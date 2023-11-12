@@ -1,4 +1,4 @@
-package ru.sop.crm.core;
+package ru.sop.core.impl;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
