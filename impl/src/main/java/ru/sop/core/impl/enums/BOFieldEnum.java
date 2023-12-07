@@ -3,6 +3,7 @@ package ru.sop.core.impl.enums;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -16,11 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BOFieldEnum {
     /*TODO
-    1) Подумать о присвоении ID типа uuid для каста в бд
-    2) Как на разных языках вводить описания и тд?!
-    3) Добавить SOURCE_AUTOMATION, OWNER, DIVISION, STATE
-    4) обдумать о rq и rs может стоит убрать тип DATA (на стадии реализации бд будет ясно)
-    * */
+        1) Интернационализацию как делать? Токены или через таблицы?
+        2) Подумать каким образом добавить SOURCE_AUTOMATION, OWNER, DIVISION, STATE атрибутами в таблице или ссылками
+    */
     ID("id", "Идентификатор", UUID.class, FieldTypeEnum.STRING),
     NAME("name", "Наименование", String.class, FieldTypeEnum.STRING),
     DATA("data", "Данные", Map.class, FieldTypeEnum.JSONB),
@@ -38,7 +37,7 @@ public enum BOFieldEnum {
     private final Class<?> dataType;
     private final FieldTypeEnum fieldType;
 
-    public static BOFieldEnum findSystemFieldByName(String name) {
-        return ENUM_BY_NAME.get(name);
+    public static Optional<BOFieldEnum> findByName(String name) {
+        return Optional.ofNullable(ENUM_BY_NAME.get(name));
     }
 }

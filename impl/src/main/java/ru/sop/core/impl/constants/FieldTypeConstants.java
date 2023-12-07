@@ -16,6 +16,11 @@ public final class FieldTypeConstants {
     public static final String ARRAY = "ARRAY";
     public static final String EMAIL = "EMAIL";
     public static final String PHONE = "PHONE";
-    public static final String REFERENCE = "REFERENCE";
-    public static final String CASCADE_REFERENCE = "CASCADE_REFERENCE";
+    public static final String ONE_TO_ONE = "ONE_TO_ONE";
+    public static final String CASCADE_ONE_TO_ONE = "CASCADE_ONE_TO_ONE";
+    public static final String ONE_TO_MANY = "ONE_TO_MANY";
+    public static final String MANY_TO_ONE = "MANY_TO_ONE";
+    public static final String CASCADE_ONE_TO_MANY = "CASCADE_ONE_TO_MANY";
+    public static final String CASCADE_MANY_TO_ONE = "CASCADE_MANY_TO_ONE";
+    public static final String VIRTUAL_ONE_TO_MANY = "VIRTUAL_ONE_TO_MANY";
 }
