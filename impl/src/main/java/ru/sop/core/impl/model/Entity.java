@@ -9,6 +9,8 @@ public record Entity(
     UUID id,
     String name,
     String description,
+    String icon,
+    String color,
     EntitySettings settings,
     /**
      * Сущность создана системой(разработчиком)
@@ -18,6 +20,7 @@ public record Entity(
      * Сущность заархивирована
      */
     boolean archived,
+    
     Audit audit
 ) {
 }
