@@ -1,7 +1,7 @@
 package ru.sop.core.impl.service.impl;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -30,54 +30,54 @@ public class BOChangeServiceImpl implements BOChangeService {
     private final OutBoxService outBoxService;
     private final BORepository boRepository;
 
-    /**
-     * filter
-     * validate
-     * enrich
-     * create out box
-     * create save bo
-     */
     @Override
     //@Transaction
     public BO create(BOCreateCmd cmd) {
         var entity = entityService.getById(cmd.entityId());
-        var fields = entityFieldService.getAllByEntityId(entity.id());
-        var boAfterFilter = filterBo(fields, cmd.bo());
+        var fieldsByName = entityFieldService.getFieldsByNameByEntityId(entity.id());
+        var boAfterFilter = filterBo(fieldsByName, cmd.bo());
+        boValidationService.validate(fieldsByName, boAfterFilter);
         var bo = enrichBeforeCreate(boAfterFilter);
-        boValidationService.validate(bo);
         outBoxService.create(bo, OutBoxType.BO);
         return boRepository.create(bo);
     }
 
-    private static BO filterBo(List<EntityField> fields, BO bo) {
-        var data = filterData(bo.getData());
-        var references = filterReferences(bo.getReferences());
+    //@Transaction
+    @Override
+    public BO patch(BOUpdateCmd cmd) {
+        var entity = entityService.getById(cmd.entityId());
+        var fields = entityFieldService.getFieldsByNameByEntityId(entity.id());
+        var boAfterFilter = filterBo(fields, cmd.bo());
+        boValidationService.validate(fields, boAfterFilter);
+        var bo = enrichBeforeUpdate(boAfterFilter);
+        return boRepository.update(bo);
+    }
+
+    private static BO filterBo(Map<String, EntityField> fieldsByName, BO bo) {
+        var data = filterData(fieldsByName, bo.getData());
+        var references = filterReferences(fieldsByName, bo.getReferences());
         return bo.toBuilder()
             .data(data)
             .references(references)
             .build();
     }
 
-    private static Map<String, Object> filterData(Map<String, Object> data) {
-        return data;
+    private static Map<String, Object> filterData(Map<String, EntityField> fieldsByName, Map<String, Object> data) {
+        return data.entrySet().stream()
+            .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
+            .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
     }
 
-    private static Map<String, Object> filterReferences(Map<String, Object> references) {
-        return references;
+    private static boolean isCanSave(EntityField entityField) {
+        return !entityField.archived()
+            || !entityField.readOnly();
     }
 
-    /**
-     * filter
-     * validate
-     * enrich
-     * create out box
-     * update save bo
-     */
-    //@Transaction
-    @Override
-    public BO patch(BOUpdateCmd cmd) {
-        var bo = enrichBeforeUpdate(cmd.bo());
-        return boRepository.update(cmd.id(), bo);
+    private static Map<String, Object> filterReferences(Map<String, EntityField> fieldsByName,
+                                                        Map<String, Object> references) {
+        return references.entrySet().stream()
+            .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
+            .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
     }
 
     private static BO enrichBeforeCreate(BO bo) {

@@ -6,7 +6,7 @@ import ru.sop.core.impl.model.BO;
 public interface BORepository {
     BO create(BO businessObject);
 
-    BO update(UUID id, BO bo);
+    BO update(BO bo);
 
     void deleteById(UUID id);
 

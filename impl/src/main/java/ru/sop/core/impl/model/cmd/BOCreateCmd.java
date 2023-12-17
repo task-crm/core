@@ -6,6 +6,7 @@ import ru.sop.core.impl.model.BO;
 
 @Builder(toBuilder = true)
 public record BOCreateCmd(
+    UUID id,
     UUID entityId,
     BO bo
 ) {
