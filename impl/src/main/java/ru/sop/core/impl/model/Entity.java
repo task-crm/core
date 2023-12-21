@@ -20,7 +20,7 @@ public record Entity(
      * Сущность заархивирована
      */
     boolean archived,
-    
+
     Audit audit
 ) {
 }

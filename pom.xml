@@ -27,7 +27,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <vavr.version>1.0.0-alpha-4</vavr.version>
+        <vavr.version>0.10.4</vavr.version>
     </properties>
     <dependencies>
         <dependency>

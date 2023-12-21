@@ -13,7 +13,7 @@ import ru.sop.core.impl.enums.FieldTypeEnum;
  * (имя поля, валидации, тип {@link FieldTypeEnum}). Имена этих полей являются именами полей в data(данные)
  * и references(ссылки)
  */
-@Value()
+@Value
 @Builder(toBuilder = true)
 @EqualsAndHashCode(of = {"id"})
 public class BO {

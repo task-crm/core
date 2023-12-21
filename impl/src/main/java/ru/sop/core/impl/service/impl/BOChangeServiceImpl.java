@@ -6,16 +6,18 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 import ru.sop.core.impl.enums.OutBoxType;
 import ru.sop.core.impl.model.Audit;
 import ru.sop.core.impl.model.BO;
 import ru.sop.core.impl.model.EntityField;
+import ru.sop.core.impl.model.cmd.BOCommand;
 import ru.sop.core.impl.model.cmd.BOCreateCmd;
 import ru.sop.core.impl.model.cmd.BOUpdateCmd;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOChangeService;
-import ru.sop.core.impl.service.BoValidationService;
+import ru.sop.core.impl.service.BOValidationService;
 import ru.sop.core.impl.service.EntityFieldService;
 import ru.sop.core.impl.service.EntityService;
 import ru.sop.core.impl.service.OutBoxService;
@@ -26,36 +28,16 @@ import ru.sop.core.impl.service.OutBoxService;
 public class BOChangeServiceImpl implements BOChangeService {
     private final EntityService entityService;
     private final EntityFieldService entityFieldService;
-    private final BoValidationService boValidationService;
+    private final BOValidationService boValidationService;
     private final OutBoxService outBoxService;
     private final BORepository boRepository;
 
-    @Override
-    //@Transaction
-    public BO create(BOCreateCmd cmd) {
-        var entity = entityService.getById(cmd.entityId());
-        var fieldsByName = entityFieldService.getFieldsByNameByEntityId(entity.id());
-        var boAfterFilter = filterBo(fieldsByName, cmd.bo());
-        boValidationService.validate(fieldsByName, boAfterFilter);
-        var bo = enrichBeforeCreate(boAfterFilter);
-        outBoxService.create(bo, OutBoxType.BO);
-        return boRepository.create(bo);
-    }
-
-    //@Transaction
-    @Override
-    public BO patch(BOUpdateCmd cmd) {
-        var entity = entityService.getById(cmd.entityId());
-        var fields = entityFieldService.getFieldsByNameByEntityId(entity.id());
-        var boAfterFilter = filterBo(fields, cmd.bo());
-        boValidationService.validate(fields, boAfterFilter);
-        var bo = enrichBeforeUpdate(boAfterFilter);
-        return boRepository.update(bo);
-    }
-
-    private static BO filterBo(Map<String, EntityField> fieldsByName, BO bo) {
-        var data = filterData(fieldsByName, bo.getData());
-        var references = filterReferences(fieldsByName, bo.getReferences());
+    private static BO filterBo(BOCommand cmd) {
+        var metadata = cmd.getMetadata();
+        var fieldByName = metadata.getFieldsByEntityId(cmd.getEntityId());
+        var bo = cmd.getBo();
+        var data = filterData(fieldByName, bo.getData());
+        var references = filterReferences(fieldByName, bo.getReferences());
         return bo.toBuilder()
             .data(data)
             .references(references)
@@ -63,7 +45,7 @@ public class BOChangeServiceImpl implements BOChangeService {
     }
 
     private static Map<String, Object> filterData(Map<String, EntityField> fieldsByName, Map<String, Object> data) {
-        return data.entrySet().stream()
+        return MapUtils.emptyIfNull(data).entrySet().stream()
             .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
             .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
     }
@@ -75,7 +57,7 @@ public class BOChangeServiceImpl implements BOChangeService {
 
     private static Map<String, Object> filterReferences(Map<String, EntityField> fieldsByName,
                                                         Map<String, Object> references) {
-        return references.entrySet().stream()
+        return MapUtils.emptyIfNull(references).entrySet().stream()
             .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
             .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
     }
@@ -110,5 +92,25 @@ public class BOChangeServiceImpl implements BOChangeService {
             .updatedBy(UUID.randomUUID())
             .updateDate(now)
             .build();
+    }
+
+    @Override
+    //@Transaction
+    public BO create(BOCreateCmd cmd) {
+        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
+        boValidationService.validate(cmdAfterFilterBo);
+        var richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
+        outBoxService.create(richBO, OutBoxType.BO);
+        return boRepository.create(richBO);
+    }
+
+    //@Transaction
+    @Override
+    public BO patch(BOUpdateCmd cmd) {
+        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
+        boValidationService.validate(cmdAfterFilterBo);
+        var richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
+        outBoxService.create(richBO, OutBoxType.BO);
+        return boRepository.update(richBO);
     }
 }

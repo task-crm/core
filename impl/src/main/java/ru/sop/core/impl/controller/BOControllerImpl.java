@@ -12,6 +12,7 @@ import ru.sop.core.api.dto.rs.PageRs;
 import ru.sop.core.impl.mapper.BOMapper;
 import ru.sop.core.impl.mapper.PageMapper;
 import ru.sop.core.impl.mapper.QueryMapper;
+import ru.sop.core.impl.metadata.MetadataFactory;
 import ru.sop.core.impl.service.BOChangeService;
 import ru.sop.core.impl.service.BODeleteService;
 import ru.sop.core.impl.service.BOSearchService;
@@ -25,6 +26,7 @@ public class BOControllerImpl implements BOController {
     private final BOMapper boMapper;
     private final QueryMapper queryMapper;
     private final PageMapper pageMapper;
+    private final MetadataFactory metadataFactory;
 
     @Override
     public PageRs getPage(QueryRq rq) {
@@ -40,14 +42,14 @@ public class BOControllerImpl implements BOController {
 
     @Override
     public BORs create(BOCreateRq rq, UUID entityId) {
-        var cmd = boMapper.convert(rq, entityId);
+        var cmd = boMapper.convert(rq, entityId, metadataFactory.create());
         var cmdResult = boChangeService.create(cmd);
         return boMapper.convert(cmdResult);
     }
 
     @Override
     public BORs patch(UUID id, BOUpdateRq rq, UUID entityId) {
-        var cmd = boMapper.convert(id, rq, entityId);
+        var cmd = boMapper.convert(id, rq, entityId, metadataFactory.create());
         var cmdResult = boChangeService.patch(cmd);
         return boMapper.convert(cmdResult);
     }

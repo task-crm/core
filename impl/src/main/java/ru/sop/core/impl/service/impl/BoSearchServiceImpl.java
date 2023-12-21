@@ -13,6 +13,7 @@ import ru.sop.core.impl.service.BOSearchService;
 @RequiredArgsConstructor
 public class BoSearchServiceImpl implements BOSearchService {
     private final BORepository boRepository;
+
     @Override
     public Page getPage(Query query) {
         return null;
