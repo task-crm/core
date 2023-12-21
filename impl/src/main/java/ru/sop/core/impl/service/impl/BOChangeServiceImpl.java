@@ -18,19 +18,35 @@ import ru.sop.core.impl.model.cmd.BOUpdateCmd;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOChangeService;
 import ru.sop.core.impl.service.BOValidationService;
-import ru.sop.core.impl.service.EntityFieldService;
-import ru.sop.core.impl.service.EntityService;
 import ru.sop.core.impl.service.OutBoxService;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BOChangeServiceImpl implements BOChangeService {
-    private final EntityService entityService;
-    private final EntityFieldService entityFieldService;
     private final BOValidationService boValidationService;
     private final OutBoxService outBoxService;
     private final BORepository boRepository;
+
+    @Override
+    //@Transaction
+    public BO create(BOCreateCmd cmd) {
+        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
+        boValidationService.validate(cmdAfterFilterBo);
+        var richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
+        outBoxService.create(richBO, OutBoxType.BO);
+        return boRepository.create(richBO);
+    }
+
+    //@Transaction
+    @Override
+    public BO patch(BOUpdateCmd cmd) {
+        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
+        boValidationService.validate(cmdAfterFilterBo);
+        var richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
+        outBoxService.create(richBO, OutBoxType.BO);
+        return boRepository.update(richBO);
+    }
 
     private static BO filterBo(BOCommand cmd) {
         var metadata = cmd.getMetadata();
@@ -92,25 +108,5 @@ public class BOChangeServiceImpl implements BOChangeService {
             .updatedBy(UUID.randomUUID())
             .updateDate(now)
             .build();
-    }
-
-    @Override
-    //@Transaction
-    public BO create(BOCreateCmd cmd) {
-        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
-        boValidationService.validate(cmdAfterFilterBo);
-        var richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
-        outBoxService.create(richBO, OutBoxType.BO);
-        return boRepository.create(richBO);
-    }
-
-    //@Transaction
-    @Override
-    public BO patch(BOUpdateCmd cmd) {
-        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
-        boValidationService.validate(cmdAfterFilterBo);
-        var richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
-        outBoxService.create(richBO, OutBoxType.BO);
-        return boRepository.update(richBO);
     }
 }
