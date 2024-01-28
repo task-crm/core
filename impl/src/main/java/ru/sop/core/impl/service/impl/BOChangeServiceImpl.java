@@ -1,22 +1,19 @@
 package ru.sop.core.impl.service.impl;
 
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
+import lombok.val;
 import org.springframework.stereotype.Service;
 import ru.sop.core.impl.enums.OutBoxType;
+import ru.sop.core.impl.helper.ClockHelper;
 import ru.sop.core.impl.model.Audit;
 import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.EntityField;
-import ru.sop.core.impl.model.cmd.BOCommand;
 import ru.sop.core.impl.model.cmd.BOCreateCmd;
 import ru.sop.core.impl.model.cmd.BOUpdateCmd;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOChangeService;
+import ru.sop.core.impl.service.BOFilterService;
 import ru.sop.core.impl.service.BOValidationService;
 import ru.sop.core.impl.service.OutBoxService;
 
@@ -25,15 +22,17 @@ import ru.sop.core.impl.service.OutBoxService;
 @RequiredArgsConstructor
 public class BOChangeServiceImpl implements BOChangeService {
     private final BOValidationService boValidationService;
+    private final BOFilterService filterService;
     private final OutBoxService outBoxService;
     private final BORepository boRepository;
+    private final ClockHelper clockHelper;
 
     @Override
     //@Transaction
     public BO create(BOCreateCmd cmd) {
-        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
-        boValidationService.validate(cmdAfterFilterBo);
-        var richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
+        val cmdAfterFilterBo = cmd.of(filterService.filter(cmd));
+        boValidationService.check(cmdAfterFilterBo);
+        val richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
         outBoxService.create(richBO, OutBoxType.BO);
         return boRepository.create(richBO);
     }
@@ -41,53 +40,22 @@ public class BOChangeServiceImpl implements BOChangeService {
     //@Transaction
     @Override
     public BO patch(BOUpdateCmd cmd) {
-        var cmdAfterFilterBo = cmd.of(filterBo(cmd));
-        boValidationService.validate(cmdAfterFilterBo);
-        var richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
+        val cmdAfterFilterBo = cmd.of(filterService.filter(cmd));
+        boValidationService.check(cmdAfterFilterBo);
+        val richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
         outBoxService.create(richBO, OutBoxType.BO);
         return boRepository.update(richBO);
     }
 
-    private static BO filterBo(BOCommand cmd) {
-        var metadata = cmd.getMetadata();
-        var fieldByName = metadata.getFieldsByEntityId(cmd.getEntityId());
-        var bo = cmd.getBo();
-        var data = filterData(fieldByName, bo.getData());
-        var references = filterReferences(fieldByName, bo.getReferences());
-        return bo.toBuilder()
-            .data(data)
-            .references(references)
-            .build();
-    }
-
-    private static Map<String, Object> filterData(Map<String, EntityField> fieldsByName, Map<String, Object> data) {
-        return MapUtils.emptyIfNull(data).entrySet().stream()
-            .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
-            .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
-    }
-
-    private static boolean isCanSave(EntityField entityField) {
-        return !entityField.archived()
-            || !entityField.readOnly();
-    }
-
-    private static Map<String, Object> filterReferences(Map<String, EntityField> fieldsByName,
-                                                        Map<String, Object> references) {
-        return MapUtils.emptyIfNull(references).entrySet().stream()
-            .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
-            .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
-    }
-
-    private static BO enrichBeforeCreate(BO bo) {
+    private BO enrichBeforeCreate(BO bo) {
         return bo.toBuilder()
             .id(bo.getId() == null ? UUID.randomUUID() : bo.getId())
             .audit(getAuditForCreate())
             .build();
-
     }
 
-    private static Audit getAuditForCreate() {
-        var now = OffsetDateTime.now();
+    private Audit getAuditForCreate() {
+        val now = clockHelper.now();
         return Audit.builder()
             .createdBy(UUID.randomUUID())
             .updatedBy(UUID.randomUUID())
@@ -96,14 +64,14 @@ public class BOChangeServiceImpl implements BOChangeService {
             .build();
     }
 
-    private static BO enrichBeforeUpdate(BO bo) {
+    private BO enrichBeforeUpdate(BO bo) {
         return bo.toBuilder()
             .audit(getAuditForUpdate(bo.getAudit()))
             .build();
     }
 
-    private static Audit getAuditForUpdate(Audit audit) {
-        var now = OffsetDateTime.now();
+    private Audit getAuditForUpdate(Audit audit) {
+        val now = clockHelper.now();
         return audit.toBuilder()
             .updatedBy(UUID.randomUUID())
             .updateDate(now)

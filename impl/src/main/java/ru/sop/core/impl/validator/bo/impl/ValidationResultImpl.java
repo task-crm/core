@@ -3,7 +3,7 @@ package ru.sop.core.impl.validator.bo.impl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.sop.core.impl.validator.ValidationResult;
+import ru.bestclick.exceptionlib.validator.ValidationResult;
 
 @Data
 @NoArgsConstructor

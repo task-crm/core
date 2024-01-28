@@ -1,0 +1,5 @@
+bestclick:
+  logging:
+    exception:
+      business: true
+      server: true

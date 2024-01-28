@@ -12,6 +12,6 @@ public interface Metadata {
 
     Entity getEntityById(UUID entityId);
 
-    Map<String, EntityField> getFieldsByEntityId(UUID entityId);
+    Map<String, EntityField> getFieldByNameByEntityId(UUID entityId);
 
 }

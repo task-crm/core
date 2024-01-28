@@ -4,5 +4,5 @@ import ru.sop.core.impl.model.cmd.BOCommand;
 
 public interface BOValidationService {
 
-    void validate(BOCommand cmd);
+    void check(BOCommand cmd);
 }

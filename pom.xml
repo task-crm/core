@@ -28,6 +28,9 @@
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <vavr.version>0.10.4</vavr.version>
+        <checker.version>3.42.0</checker.version>
+        <commons-collections4.vaersion>4.4</commons-collections4.vaersion>
+        <exceptionlib-version>0.0.1-SNAPSHOT</exceptionlib-version>
     </properties>
     <dependencies>
         <dependency>
@@ -36,15 +39,33 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>ru.bestclick</groupId>
+            <artifactId>exceptionlib</artifactId>
+            <version>${exceptionlib-version}</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
 
         <dependencies>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.vaersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker</artifactId>
+                <version>${checker.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>

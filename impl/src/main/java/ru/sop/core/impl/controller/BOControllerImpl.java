@@ -2,6 +2,7 @@ package ru.sop.core.impl.controller;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sop.core.api.controller.BOController;
 import ru.sop.core.api.dto.rq.BOCreateRq;
@@ -30,8 +31,8 @@ public class BOControllerImpl implements BOController {
 
     @Override
     public PageRs getPage(QueryRq rq) {
-        var query = queryMapper.convert(rq);
-        var page = boSearchService.getPage(query);
+        val query = queryMapper.convert(rq);
+        val page = boSearchService.getPage(query);
         return pageMapper.convert(page);
     }
 
@@ -42,15 +43,15 @@ public class BOControllerImpl implements BOController {
 
     @Override
     public BORs create(BOCreateRq rq, UUID entityId) {
-        var cmd = boMapper.convert(rq, entityId, metadataFactory.create());
-        var cmdResult = boChangeService.create(cmd);
+        val cmd = boMapper.convert(rq, entityId, metadataFactory.create());
+        val cmdResult = boChangeService.create(cmd);
         return boMapper.convert(cmdResult);
     }
 
     @Override
     public BORs patch(UUID id, BOUpdateRq rq, UUID entityId) {
-        var cmd = boMapper.convert(id, rq, entityId, metadataFactory.create());
-        var cmdResult = boChangeService.patch(cmd);
+        val cmd = boMapper.convert(id, rq, entityId, metadataFactory.create());
+        val cmdResult = boChangeService.patch(cmd);
         return boMapper.convert(cmdResult);
     }
 

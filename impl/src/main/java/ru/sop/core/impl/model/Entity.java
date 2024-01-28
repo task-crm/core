@@ -1,26 +1,32 @@
 package ru.sop.core.impl.model;
 
 import java.util.UUID;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 /**
  * Сущность ограничивает и настраивает бизнес объект {@link BO}. У каждой сущности есть набор полей {@link EntityField}
  */
-public record Entity(
-    UUID id,
-    String name,
-    String description,
-    String icon,
-    String color,
-    EntitySettings settings,
+@Value
+@Builder(toBuilder = true)
+@EqualsAndHashCode(of = {"id"})
+public class Entity {
+    UUID id;
+    String name;
+    String description;
+    String icon;
+    String color;
+    EntitySettings settings;
     /**
      * Сущность создана системой(разработчиком)
      */
-    boolean system,
+    boolean system;
     /**
      * Сущность заархивирована
      */
-    boolean archived,
+    boolean archived;
 
-    Audit audit
-) {
+    Audit audit;
+
 }
