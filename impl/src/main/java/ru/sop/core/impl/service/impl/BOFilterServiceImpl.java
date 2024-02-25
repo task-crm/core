@@ -20,15 +20,12 @@ public class BOFilterServiceImpl implements BOFilterService {
         val bo = cmd.getBo();
         val data = filterData(fieldByName, bo.getData());
         val references = filterReferences(fieldByName, bo.getReferences());
-        return bo.toBuilder()
-            .data(data)
-            .references(references)
-            .build();
+        return bo.of(data, references);
     }
 
-    private static Map<String, Object> filterData(Map<String, EntityField> fieldsByName, Map<String, Object> data) {
+    private static Map<String, Object> filterData(Map<String, EntityField> fieldByName, Map<String, Object> data) {
         return MapUtils.emptyIfNull(data).entrySet().stream()
-            .filter(entry -> isCanSave(fieldsByName.get(entry.getKey())))
+            .filter(entry -> isCanSave(fieldByName.get(entry.getKey())))
             .collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
     }
 

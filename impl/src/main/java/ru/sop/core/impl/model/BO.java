@@ -29,4 +29,11 @@ public class BO {
     @Builder.Default
     Map<String, Object> references = Map.of();
     Audit audit;
+
+    public BO of(Map<String, Object> data, Map<String, Object> references) {
+        return this.toBuilder()
+            .data(data)
+            .references(references)
+            .build();
+    }
 }

@@ -3,3 +3,10 @@ bestclick:
     exception:
       business: true
       server: true
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/core
+    username: core
+    password: 0000
