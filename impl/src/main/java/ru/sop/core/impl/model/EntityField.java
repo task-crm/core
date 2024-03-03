@@ -15,12 +15,14 @@ import ru.sop.core.impl.enums.FieldTypeEnum;
 @EqualsAndHashCode(of = {"id"})
 public class EntityField {
     UUID id;
+    UUID entityId;
     String name;
+    String label;
     String description;
     FieldTypeEnum type;
     EntityFieldSettings settings;
     /**
-     * Поле создано системой(разработчиком)
+     * Поле сущности создано системой для её обслуживания. Не может быть удалено/архивировано
      */
     boolean system;
     /**

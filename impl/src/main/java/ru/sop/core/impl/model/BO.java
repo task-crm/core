@@ -23,6 +23,9 @@ public class BO {
      * идентификатор сущности, к которой принадлежит этот бизнес объект
      */
     UUID entityId;
+    /**
+     * Объект создана системой для её обслуживания. Не может быть удален/архивирован
+     */
     boolean system;
     @Builder.Default
     Map<String, Object> data = Map.of();

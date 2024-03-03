@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: 1.0/init.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 1.0/03_03_2024_creat_t_business_object.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 1.0/03_03_2024_creat_t_entity.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 1.0/03_03_2024_creat_t_entity_field.sql
+      relativeToChangelogFile: true

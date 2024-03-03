@@ -10,3 +10,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/core
     username: core
     password: 0000
+  liquibase:
+    enabled: false

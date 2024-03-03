@@ -14,12 +14,13 @@ import lombok.Value;
 public class Entity {
     UUID id;
     String name;
+    String label;
     String description;
     String icon;
     String color;
     EntitySettings settings;
     /**
-     * Сущность создана системой(разработчиком)
+     * Сущность создана системой для её обслуживания. Не может быть удалена/архивирована
      */
     boolean system;
     /**
