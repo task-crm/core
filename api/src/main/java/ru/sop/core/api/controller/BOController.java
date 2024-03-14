@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.sop.core.api.dto.rq.BOCreateRq;
 import ru.sop.core.api.dto.rq.BOUpdateRq;
-import ru.sop.core.api.dto.rq.QueryRq;
 import ru.sop.core.api.dto.rs.BORs;
 import ru.sop.core.api.dto.rs.PageRs;
 

@@ -29,7 +29,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <vavr.version>0.10.4</vavr.version>
-        <checker.version>3.42.0</checker.version>
+        <checker.version>3.41.0</checker.version>
         <exceptionlib-version>0.0.1-SNAPSHOT</exceptionlib-version>
     </properties>
 
@@ -80,6 +80,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker</artifactId>
+            <version>${checker.version}</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -88,11 +93,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons-collections4.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.checkerframework</groupId>
-                <artifactId>checker</artifactId>
-                <version>${checker.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vavr</groupId>

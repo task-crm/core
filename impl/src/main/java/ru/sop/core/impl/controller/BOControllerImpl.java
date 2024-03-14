@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sop.core.api.controller.BOController;
 import ru.sop.core.api.dto.rq.BOCreateRq;
 import ru.sop.core.api.dto.rq.BOUpdateRq;
-import ru.sop.core.api.dto.rq.QueryRq;
 import ru.sop.core.api.dto.rs.BORs;
 import ru.sop.core.api.dto.rs.PageRs;
 import ru.sop.core.impl.mapper.BOMapper;

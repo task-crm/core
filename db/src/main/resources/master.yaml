@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file: 1.0/03_03_2024_creat_t_entity_field.sql
       relativeToChangelogFile: true
+  - include:
+      file: 1.0/13_03_2024_creat_t_reference.sql
+      relativeToChangelogFile: true
