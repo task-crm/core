@@ -1,6 +1,6 @@
 package ru.sop.core.impl.service;
 
-import ru.sop.core.impl.model.cmd.BOCommand;
+import ru.sop.core.impl.model.bo.BOCommand;
 
 public interface BOValidationService {
 

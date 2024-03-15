@@ -1,12 +1,12 @@
 package ru.sop.core.impl.repository;
 
 import java.util.UUID;
-import ru.sop.core.impl.model.BO;
+import ru.sop.core.impl.model.bo.BO;
 
 public interface BORepository {
-    BO create(BO businessObject);
+    void create(BO businessObject);
 
-    BO update(BO bo);
+    void update(BO bo);
 
     void deleteById(UUID id);
 

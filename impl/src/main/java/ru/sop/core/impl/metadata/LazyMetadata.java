@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import ru.sop.core.impl.model.Entity;
-import ru.sop.core.impl.model.EntityField;
+import ru.sop.core.impl.model.entity.Entity;
+import ru.sop.core.impl.model.entity.field.EntityField;
 import ru.sop.core.impl.service.EntityFieldService;
 import ru.sop.core.impl.service.EntityService;
 
@@ -40,7 +40,7 @@ public class LazyMetadata implements Metadata {
     }
 
     private Entity loadEntity(UUID entityId) {
-        val entity = entityService.getById(entityId);
+        val entity = entityService.getOne(entityId);
         entityById.get().put(entityId, entity);
         return entity;
     }

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import ru.bestclick.exceptionlib.util.ValidationUtils;
-import ru.sop.core.impl.model.cmd.BOCommand;
+import ru.sop.core.impl.model.bo.BOCommand;
 import ru.sop.core.impl.service.BOValidationService;
 import ru.sop.core.impl.stratagy.BOFieldValidationStrategy;
 

@@ -10,30 +10,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.sop.core.api.dto.rq.BOCreateRq;
-import ru.sop.core.api.dto.rq.BOUpdateRq;
-import ru.sop.core.api.dto.rs.BORs;
-import ru.sop.core.api.dto.rs.PageRs;
+import ru.sop.core.api.dto.bo.BOCreateRq;
+import ru.sop.core.api.dto.bo.BORs;
+import ru.sop.core.api.dto.bo.BOUpdateRq;
+import ru.sop.core.api.dto.data.DataRq;
+import ru.sop.core.api.dto.data.DataRs;
 
 public interface BOController {
 
-    @PostMapping("v1/bo/page")
-    PageRs getPage(@RequestBody @Valid @Nonnull QueryRq rq);
+    @PostMapping("v1/entity/{entityId}/bo/data")
+    DataRs getData(@PathVariable("entityId") UUID entityId,
+                   @RequestBody @Valid @Nonnull DataRq rq);
 
-    @GetMapping("v1/bo/{id}")
-    BORs getById(@PathVariable("id") UUID id);
+    @GetMapping("v1/entity/{entityId}/bo/{BoId}")
+    BORs getById(@PathVariable("entityId") UUID entityId,
+                 @PathVariable("BoId") UUID boId);
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("v1/bo/entity/{entityId}")
-    BORs create(@RequestBody @Valid @Nonnull BOCreateRq rq,
-                @PathVariable("entityId") UUID entityId);
+    @PostMapping("v1/entity/{entityId}/bo")
+    BORs create(@PathVariable("entityId") UUID entityId,
+                @RequestBody @Valid @Nonnull BOCreateRq rq);
 
-    @PostMapping("v1/bo/{id}/entity/{entityId}")
-    BORs patch(@PathVariable("id") UUID id,
-               @RequestBody @Valid @Nonnull BOUpdateRq rq,
-               @PathVariable("entityId") UUID entityId);
+    @PostMapping("v1/entity/{entityId}/bo/{BOId}")
+    BORs patch(@PathVariable("entityId") UUID entityId,
+               @PathVariable("BOId") UUID id,
+               @RequestBody @Valid @Nonnull BOUpdateRq rq);
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("v1/bo/{id}")
-    void deleteById(@PathVariable("id") UUID id);
+    @DeleteMapping("v1/entity/{entityId}/bo/{BoId}")
+    void deleteById(@PathVariable("entityId") UUID entityId,
+                    @PathVariable("BoId") UUID boId);
 }

@@ -1,7 +1,7 @@
 package ru.sop.core.impl.service;
 
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.cmd.BOCommand;
+import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.bo.BOCommand;
 
 public interface BOFilterService {
 

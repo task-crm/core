@@ -3,14 +3,14 @@ package ru.sop.core.impl.mapper;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.sop.core.api.dto.rq.BOCreateRq;
-import ru.sop.core.api.dto.rq.BOUpdateRq;
-import ru.sop.core.api.dto.rs.BORs;
+import ru.sop.core.api.dto.bo.BOCreateRq;
+import ru.sop.core.api.dto.bo.BORs;
+import ru.sop.core.api.dto.bo.BOUpdateRq;
 import ru.sop.core.impl.config.MapstructConfiguration;
 import ru.sop.core.impl.metadata.Metadata;
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.cmd.BOCreateCmd;
-import ru.sop.core.impl.model.cmd.BOUpdateCmd;
+import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.bo.BOCreateCmd;
+import ru.sop.core.impl.model.bo.BOUpdateCmd;
 
 
 @Mapper(config = MapstructConfiguration.class)

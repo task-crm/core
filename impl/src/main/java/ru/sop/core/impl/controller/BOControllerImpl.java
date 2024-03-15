@@ -5,13 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sop.core.api.controller.BOController;
-import ru.sop.core.api.dto.rq.BOCreateRq;
-import ru.sop.core.api.dto.rq.BOUpdateRq;
-import ru.sop.core.api.dto.rs.BORs;
-import ru.sop.core.api.dto.rs.PageRs;
+import ru.sop.core.api.dto.bo.BOCreateRq;
+import ru.sop.core.api.dto.bo.BORs;
+import ru.sop.core.api.dto.bo.BOUpdateRq;
+import ru.sop.core.api.dto.data.DataRq;
+import ru.sop.core.api.dto.data.DataRs;
 import ru.sop.core.impl.mapper.BOMapper;
-import ru.sop.core.impl.mapper.PageMapper;
-import ru.sop.core.impl.mapper.QueryMapper;
 import ru.sop.core.impl.metadata.MetadataFactory;
 import ru.sop.core.impl.service.BOChangeService;
 import ru.sop.core.impl.service.BODeleteService;
@@ -24,38 +23,35 @@ public class BOControllerImpl implements BOController {
     private final BOChangeService boChangeService;
     private final BODeleteService boDeleteService;
     private final BOMapper boMapper;
-    private final QueryMapper queryMapper;
-    private final PageMapper pageMapper;
     private final MetadataFactory metadataFactory;
 
+    //TODO переписать на команду
     @Override
-    public PageRs getPage(QueryRq rq) {
-        val query = queryMapper.convert(rq);
-        val page = boSearchService.getPage(query);
-        return pageMapper.convert(page);
+    public DataRs getData(UUID entityId, DataRq rq) {
+        return boSearchService.getData(entityId, rq);
     }
 
     @Override
-    public BORs getById(UUID id) {
-        return boMapper.convert(boSearchService.getById(id));
+    public BORs getById(UUID entityId, UUID boId) {
+        return boMapper.convert(boSearchService.getById(boId));
     }
 
     @Override
-    public BORs create(BOCreateRq rq, UUID entityId) {
+    public BORs create(UUID entityId, BOCreateRq rq) {
         val cmd = boMapper.convert(rq, entityId, metadataFactory.create());
         val cmdResult = boChangeService.create(cmd);
         return boMapper.convert(cmdResult);
     }
 
     @Override
-    public BORs patch(UUID id, BOUpdateRq rq, UUID entityId) {
-        val cmd = boMapper.convert(id, rq, entityId, metadataFactory.create());
+    public BORs patch(UUID entityId, UUID boId, BOUpdateRq rq) {
+        val cmd = boMapper.convert(boId, rq, entityId, metadataFactory.create());
         val cmdResult = boChangeService.patch(cmd);
         return boMapper.convert(cmdResult);
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(UUID entityId, UUID id) {
         boDeleteService.deleteById(id);
     }
 }

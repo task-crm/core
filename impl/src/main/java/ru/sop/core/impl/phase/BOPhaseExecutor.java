@@ -1,7 +1,7 @@
 package ru.sop.core.impl.phase;
 
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.cmd.BOCommand;
+import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.bo.BOCommand;
 
 /**
  * Точка входа в выполнение фаз бизнес объекта. Запускает выполнение всех фаз бизнес объекта. Фазы - {@link BOPhase}.

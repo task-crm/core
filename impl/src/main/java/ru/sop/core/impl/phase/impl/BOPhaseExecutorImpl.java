@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.cmd.BOCommand;
+import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.bo.BOCommand;
 import ru.sop.core.impl.phase.BOPhaseExecutor;
 import ru.sop.core.impl.phase.BOPhaseOrderRegulator;
 

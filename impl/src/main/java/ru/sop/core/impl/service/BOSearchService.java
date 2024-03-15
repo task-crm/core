@@ -1,13 +1,13 @@
 package ru.sop.core.impl.service;
 
 import java.util.UUID;
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.Page;
-import ru.sop.core.impl.model.query.Query;
+import ru.sop.core.api.dto.data.DataRq;
+import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.impl.model.bo.BO;
 
 public interface BOSearchService {
 
-    Page getPage(Query query);
+    DataRs getData(UUID entityId, DataRq rq);
 
     BO getById(UUID id);
 }

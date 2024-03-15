@@ -8,8 +8,8 @@ import lombok.Value;
 @Value
 @Builder(toBuilder = true)
 public class Audit {
-    OffsetDateTime updateDate;
     OffsetDateTime createdDate;
-    UUID updatedBy;
     UUID createdBy;
+    OffsetDateTime updateDate;
+    UUID updatedBy;
 }

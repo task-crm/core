@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.bestclick.exceptionlib.config.ThreadLocalStorage;
 import ru.sop.core.impl.enums.OutBoxType;
 import ru.sop.core.impl.helper.ClockHelper;
 import ru.sop.core.impl.model.Audit;
-import ru.sop.core.impl.model.BO;
-import ru.sop.core.impl.model.cmd.BOCreateCmd;
-import ru.sop.core.impl.model.cmd.BOUpdateCmd;
+import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.bo.BOCreateCmd;
+import ru.sop.core.impl.model.bo.BOUpdateCmd;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOChangeService;
 import ru.sop.core.impl.service.BOFilterService;
@@ -28,23 +30,25 @@ public class BOChangeServiceImpl implements BOChangeService {
     private final ClockHelper clockHelper;
 
     @Override
-    //@Transaction
+    @Transactional
     public BO create(BOCreateCmd cmd) {
         val cmdAfterFilterBo = cmd.of(filterService.filter(cmd));
         boValidationService.check(cmdAfterFilterBo);
         val richBO = enrichBeforeCreate(cmdAfterFilterBo.getBo());
         outBoxService.create(richBO, OutBoxType.BO);
-        return boRepository.create(richBO);
+        boRepository.create(richBO);
+        return richBO;
     }
 
-    //@Transaction
     @Override
+    @Transactional
     public BO patch(BOUpdateCmd cmd) {
         val cmdAfterFilterBo = cmd.of(filterService.filter(cmd));
         boValidationService.check(cmdAfterFilterBo);
         val richBO = enrichBeforeUpdate(cmdAfterFilterBo.getBo());
         outBoxService.create(richBO, OutBoxType.BO);
-        return boRepository.update(richBO);
+        boRepository.update(richBO);
+        return richBO;
     }
 
     private BO enrichBeforeCreate(BO bo) {
@@ -57,8 +61,8 @@ public class BOChangeServiceImpl implements BOChangeService {
     private Audit getAuditForCreate() {
         val now = clockHelper.now();
         return Audit.builder()
-            .createdBy(UUID.randomUUID())
-            .updatedBy(UUID.randomUUID())
+            .createdBy(ThreadLocalStorage.getUserId())
+            .updatedBy(ThreadLocalStorage.getUserId())
             .createdDate(now)
             .updateDate(now)
             .build();
@@ -73,7 +77,7 @@ public class BOChangeServiceImpl implements BOChangeService {
     private Audit getAuditForUpdate(Audit audit) {
         val now = clockHelper.now();
         return audit.toBuilder()
-            .updatedBy(UUID.randomUUID())
+            .updatedBy(ThreadLocalStorage.getUserId())
             .updateDate(now)
             .build();
     }
