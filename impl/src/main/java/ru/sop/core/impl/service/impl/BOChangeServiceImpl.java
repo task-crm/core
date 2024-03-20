@@ -6,10 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.bestclick.exceptionlib.config.ThreadLocalStorage;
 import ru.sop.core.impl.enums.OutBoxType;
-import ru.sop.core.impl.helper.ClockHelper;
-import ru.sop.core.impl.model.Audit;
+import ru.sop.core.impl.helper.AuditHelper;
 import ru.sop.core.impl.model.bo.BO;
 import ru.sop.core.impl.model.bo.BOCreateCmd;
 import ru.sop.core.impl.model.bo.BOUpdateCmd;
@@ -27,7 +25,7 @@ public class BOChangeServiceImpl implements BOChangeService {
     private final BOFilterService filterService;
     private final OutBoxService outBoxService;
     private final BORepository boRepository;
-    private final ClockHelper clockHelper;
+    private final AuditHelper auditHelper;
 
     @Override
     @Transactional
@@ -54,31 +52,13 @@ public class BOChangeServiceImpl implements BOChangeService {
     private BO enrichBeforeCreate(BO bo) {
         return bo.toBuilder()
             .id(bo.getId() == null ? UUID.randomUUID() : bo.getId())
-            .audit(getAuditForCreate())
-            .build();
-    }
-
-    private Audit getAuditForCreate() {
-        val now = clockHelper.now();
-        return Audit.builder()
-            .createdBy(ThreadLocalStorage.getUserId())
-            .updatedBy(ThreadLocalStorage.getUserId())
-            .createdDate(now)
-            .updateDate(now)
+            .audit(auditHelper.getForCreate())
             .build();
     }
 
     private BO enrichBeforeUpdate(BO bo) {
         return bo.toBuilder()
-            .audit(getAuditForUpdate(bo.getAudit()))
-            .build();
-    }
-
-    private Audit getAuditForUpdate(Audit audit) {
-        val now = clockHelper.now();
-        return audit.toBuilder()
-            .updatedBy(ThreadLocalStorage.getUserId())
-            .updateDate(now)
+            .audit(auditHelper.getForUpdate(bo.getAudit()))
             .build();
     }
 }

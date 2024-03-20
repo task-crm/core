@@ -2,7 +2,7 @@ package ru.sop.core.impl.service;
 
 import java.util.Map;
 import java.util.UUID;
-import ru.sop.core.impl.model.data.DataResult;
+import ru.sop.core.impl.model.data.Page;
 import ru.sop.core.impl.model.entity.field.EntityField;
 import ru.sop.core.impl.model.entity.field.EntityFieldGetCmd;
 
@@ -17,5 +17,5 @@ public interface EntityFieldService {
 
     EntityField getOne(UUID entityId, UUID fieldId);
 
-    DataResult getData(EntityFieldGetCmd cmd);
+    Page<EntityField> getPage(EntityFieldGetCmd cmd);
 }

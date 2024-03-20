@@ -23,7 +23,7 @@ public class PagingResult {
         .build();
 
     /**
-     * Номер ткущей страницы
+     * Номер текущей страницы
      */
     Long currentPage;
 

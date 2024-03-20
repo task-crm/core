@@ -14,8 +14,8 @@ CREATE TABLE t_entity
     archived     BOOLEAN                  NOT NULL,
 
     created_date TIMESTAMP WITH TIME ZONE NOT NULL,
-    update_date  TIMESTAMP WITH TIME ZONE NOT NULL,
-    create_by    UUID                     NOT NULL,
+    updated_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_by   UUID                     NOT NULL,
     updated_by   UUID                     NOT NULL,
 
     PRIMARY KEY (id, tenant_id),
@@ -49,8 +49,8 @@ COMMENT
 COMMENT
     ON COLUMN t_entity.created_date IS 'дата создания';
 COMMENT
-    ON COLUMN t_entity.update_date IS 'дата обновления';
+    ON COLUMN t_entity.updated_date IS 'дата обновления';
 COMMENT
-    ON COLUMN t_entity.create_by IS 'идентификатор создателя';
+    ON COLUMN t_entity.created_by IS 'идентификатор создателя';
 COMMENT
     ON COLUMN t_entity.updated_by IS 'идентификатор обновившего';

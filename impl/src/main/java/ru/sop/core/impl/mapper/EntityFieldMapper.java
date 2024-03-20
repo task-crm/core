@@ -7,13 +7,13 @@ import ru.sop.core.api.dto.data.DataRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldCreateRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldUpdateRq;
-import ru.sop.core.impl.config.MapstructConfiguration;
+import ru.sop.core.impl.config.MapstructConfig;
 import ru.sop.core.impl.metadata.Metadata;
 import ru.sop.core.impl.model.entity.field.EntityField;
 import ru.sop.core.impl.model.entity.field.EntityFieldGetCmd;
 
 @Mapper(
-    config = MapstructConfiguration.class,
+    config = MapstructConfig.class,
     uses = DataMapper.class
 )
 public interface EntityFieldMapper {

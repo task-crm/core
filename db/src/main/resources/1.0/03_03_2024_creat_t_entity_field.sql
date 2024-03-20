@@ -8,7 +8,7 @@ CREATE TABLE t_entity_field
     name             VARCHAR(128)             NOT NULL,
     label            VARCHAR(128)             NOT NULL,
     description      VARCHAR(128),
-    type             SMALLINT                 NOT NULL,
+    type             VARCHAR(128)             NOT NULL,
     settings         JSONB,
     system           BOOLEAN                  NOT NULL,
     archived         BOOLEAN                  NOT NULL,
@@ -18,8 +18,8 @@ CREATE TABLE t_entity_field
     read_only        BOOLEAN                  NOT NULL,
 
     created_date     TIMESTAMP WITH TIME ZONE NOT NULL,
-    update_date      TIMESTAMP WITH TIME ZONE NOT NULL,
-    create_by        UUID                     NOT NULL,
+    updated_date     TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_by       UUID                     NOT NULL,
     updated_by       UUID                     NOT NULL,
 
     PRIMARY KEY (id, tenant_id),
@@ -61,8 +61,8 @@ COMMENT
 COMMENT
     ON COLUMN t_entity_field.created_date IS 'дата создания';
 COMMENT
-    ON COLUMN t_entity_field.update_date IS 'дата обновления';
+    ON COLUMN t_entity_field.updated_date IS 'дата обновления';
 COMMENT
-    ON COLUMN t_entity_field.create_by IS 'идентификатор создателя';
+    ON COLUMN t_entity_field.created_by IS 'идентификатор создателя';
 COMMENT
     ON COLUMN t_entity_field.updated_by IS 'идентификатор обновившего';

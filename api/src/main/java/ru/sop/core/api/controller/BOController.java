@@ -14,12 +14,12 @@ import ru.sop.core.api.dto.bo.BOCreateRq;
 import ru.sop.core.api.dto.bo.BORs;
 import ru.sop.core.api.dto.bo.BOUpdateRq;
 import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.api.dto.data.PageRs;
 
 public interface BOController {
 
     @PostMapping("v1/entity/{entityId}/bo/data")
-    DataRs getData(@PathVariable("entityId") UUID entityId,
+    PageRs getData(@PathVariable("entityId") UUID entityId,
                    @RequestBody @Valid @Nonnull DataRq rq);
 
     @GetMapping("v1/entity/{entityId}/bo/{BoId}")

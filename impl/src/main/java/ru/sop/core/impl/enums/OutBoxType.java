@@ -4,5 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum OutBoxType {
-    BO
+    BO,
+    ENTITY,
+    ENTITY_FIELD
 }

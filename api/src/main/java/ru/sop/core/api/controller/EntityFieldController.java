@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.api.dto.data.PageRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldCreateRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldUpdateRq;
@@ -36,6 +36,6 @@ public interface EntityFieldController {
                           @PathVariable("fieldId") UUID fieldId);
 
     @GetMapping("v1/entity/{entityId}/field/data")
-    DataRs getData(@PathVariable("entityId") UUID entityId,
+    PageRs getData(@PathVariable("entityId") UUID entityId,
                    @RequestBody DataRq rq);
 }

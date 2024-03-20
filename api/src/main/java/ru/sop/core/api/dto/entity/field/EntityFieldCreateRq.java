@@ -1,11 +1,15 @@
 package ru.sop.core.api.dto.entity.field;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 
 public record EntityFieldCreateRq(
+    @NotBlank
     String name,
+    @NotBlank
     String label,
     String description,
+    @NotBlank
     String type,
     EntityFieldSettingsDto settings,
     boolean system,

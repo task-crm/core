@@ -6,10 +6,10 @@ import org.mapstruct.Mapping;
 import ru.sop.core.api.dto.entity.EntityCreateRq;
 import ru.sop.core.api.dto.entity.EntityRs;
 import ru.sop.core.api.dto.entity.EntityUpdateRq;
-import ru.sop.core.impl.config.MapstructConfiguration;
+import ru.sop.core.impl.config.MapstructConfig;
 import ru.sop.core.impl.model.entity.Entity;
 
-@Mapper(config = MapstructConfiguration.class)
+@Mapper(config = MapstructConfig.class)
 public interface EntityMapper {
 
     @Mapping(target = "id", ignore = true)

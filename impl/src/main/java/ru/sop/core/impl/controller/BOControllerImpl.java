@@ -9,7 +9,7 @@ import ru.sop.core.api.dto.bo.BOCreateRq;
 import ru.sop.core.api.dto.bo.BORs;
 import ru.sop.core.api.dto.bo.BOUpdateRq;
 import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.api.dto.data.PageRs;
 import ru.sop.core.impl.mapper.BOMapper;
 import ru.sop.core.impl.metadata.MetadataFactory;
 import ru.sop.core.impl.service.BOChangeService;
@@ -27,7 +27,7 @@ public class BOControllerImpl implements BOController {
 
     //TODO переписать на команду
     @Override
-    public DataRs getData(UUID entityId, DataRq rq) {
+    public PageRs getData(UUID entityId, DataRq rq) {
         return boSearchService.getData(entityId, rq);
     }
 

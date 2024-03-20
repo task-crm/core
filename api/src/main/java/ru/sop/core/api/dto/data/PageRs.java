@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Schema(title = "Общий ответ для получения данных")
+@Schema(title = "Общий ответ для получения страницы данных")
 @JsonPropertyOrder(value = {
     "data",
     "paging"
@@ -18,7 +18,7 @@ import lombok.extern.jackson.Jacksonized;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataRs {
+public class PageRs {
 
     @Schema(title = "Данные")
     Object data;

@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.api.dto.data.PageRs;
 import ru.sop.core.impl.model.bo.BO;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOSearchService;
@@ -15,7 +15,7 @@ public class BoSearchServiceImpl implements BOSearchService {
     private final BORepository boRepository;
 
     @Override
-    public DataRs getData(UUID entityId, DataRq rq) {
+    public PageRs getData(UUID entityId, DataRq rq) {
         return null;
     }
 

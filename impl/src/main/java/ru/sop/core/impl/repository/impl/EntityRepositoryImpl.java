@@ -33,7 +33,7 @@ public class EntityRepositoryImpl implements EntityRepository {
 
             .set(T_ENTITY.CREATED_DATE, entity.getAudit().getCreatedDate())
             .set(T_ENTITY.CREATE_BY, entity.getAudit().getCreatedBy())
-            .set(T_ENTITY.UPDATE_DATE, entity.getAudit().getUpdateDate())
+            .set(T_ENTITY.UPDATE_DATE, entity.getAudit().getUpdatedDate())
             .set(T_ENTITY.UPDATED_BY, entity.getAudit().getUpdatedBy())
             .execute();
     }
@@ -49,7 +49,7 @@ public class EntityRepositoryImpl implements EntityRepository {
             .set(T_ENTITY.SYSTEM, entity.isSystem())
             .set(T_ENTITY.ARCHIVED, entity.isArchived())
 
-            .set(T_ENTITY.UPDATE_DATE, entity.getAudit().getUpdateDate())
+            .set(T_ENTITY.UPDATE_DATE, entity.getAudit().getUpdatedDate())
             .set(T_ENTITY.UPDATED_BY, entity.getAudit().getUpdatedBy())
 
             .where(

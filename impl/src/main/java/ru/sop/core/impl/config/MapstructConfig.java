@@ -10,5 +10,5 @@ import org.springframework.context.annotation.Configuration;
     typeConversionPolicy = ReportingPolicy.ERROR,
     componentModel = "spring"
 )
-public class MapstructConfiguration {
+public class MapstructConfig {
 }

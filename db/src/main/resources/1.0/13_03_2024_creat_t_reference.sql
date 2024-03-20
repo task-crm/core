@@ -8,8 +8,8 @@ CREATE TABLE t_reference
     type         varchar(50)              NOT NULL,
 
     created_date TIMESTAMP WITH TIME ZONE NOT NULL,
-    update_date  TIMESTAMP WITH TIME ZONE NOT NULL,
-    create_by    UUID                     NOT NULL,
+    updated_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_by   UUID                     NOT NULL,
     updated_by   UUID                     NOT NULL,
 
     Foreign key (source, tenant_id) references t_business_object (id, tenant_id) on delete cascade,
@@ -32,8 +32,8 @@ COMMENT
 COMMENT
     ON COLUMN t_reference.created_date IS 'дата создания';
 COMMENT
-    ON COLUMN t_reference.update_date IS 'дата обновления';
+    ON COLUMN t_reference.updated_date IS 'дата обновления';
 COMMENT
-    ON COLUMN t_reference.create_by IS 'идентификатор создателя';
+    ON COLUMN t_reference.created_by IS 'идентификатор создателя';
 COMMENT
     ON COLUMN t_reference.updated_by IS 'идентификатор обновившего';

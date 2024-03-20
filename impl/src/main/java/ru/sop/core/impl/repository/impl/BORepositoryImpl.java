@@ -29,7 +29,7 @@ public class BORepositoryImpl implements BORepository {
 
             .set(T_BUSINESS_OBJECT.CREATED_DATE, bo.getAudit().getCreatedDate())
             .set(T_BUSINESS_OBJECT.CREATE_BY, bo.getAudit().getCreatedBy())
-            .set(T_BUSINESS_OBJECT.UPDATE_DATE, bo.getAudit().getUpdateDate())
+            .set(T_BUSINESS_OBJECT.UPDATE_DATE, bo.getAudit().getUpdatedDate())
             .set(T_BUSINESS_OBJECT.UPDATED_BY, bo.getAudit().getUpdatedBy())
             .execute();
     }
@@ -41,7 +41,7 @@ public class BORepositoryImpl implements BORepository {
             .set(T_BUSINESS_OBJECT.SYSTEM, bo.isSystem())
             .set(T_BUSINESS_OBJECT.DATA, jsonbHelper.toJsonB(bo.getData()))
 
-            .set(T_BUSINESS_OBJECT.UPDATE_DATE, bo.getAudit().getUpdateDate())
+            .set(T_BUSINESS_OBJECT.UPDATE_DATE, bo.getAudit().getUpdatedDate())
             .set(T_BUSINESS_OBJECT.UPDATED_BY, bo.getAudit().getUpdatedBy())
 
             .where(

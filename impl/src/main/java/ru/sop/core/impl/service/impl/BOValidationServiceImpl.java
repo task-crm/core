@@ -24,7 +24,8 @@ public class BOValidationServiceImpl implements BOValidationService {
         val result = Stream.of(bo.getData(), bo.getReferences())
             .flatMap(map -> map.entrySet().stream())
             .map(entry -> boFieldValidationStrategy.getValidator(
-                fieldByName.get(fieldByName.get(entry.getKey())).getType()
+                fieldByName.get(
+                    fieldByName.get(entry.getKey())).getType()
             ).validate(entry.getValue()))
             .collect(Collectors.toSet());
         ValidationUtils.checkResult(result);

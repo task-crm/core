@@ -6,7 +6,7 @@ import lombok.val;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sop.core.api.controller.EntityFieldController;
 import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.DataRs;
+import ru.sop.core.api.dto.data.PageRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldCreateRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldUpdateRq;
@@ -18,10 +18,10 @@ import ru.sop.core.impl.service.EntityFieldService;
 @RestController
 @RequiredArgsConstructor
 public class EntityFieldControllerImpl implements EntityFieldController {
-    EntityFieldMapper entityFieldMapper;
-    DataMapper dataMapper;
-    EntityFieldService entityFieldService;
-    MetadataFactory metadataFactory;
+    private final EntityFieldMapper entityFieldMapper;
+    private final DataMapper dataMapper;
+    private final EntityFieldService entityFieldService;
+    private final MetadataFactory metadataFactory;
 
     @Override
     public EntityFieldRs create(UUID entityId, EntityFieldCreateRq rq) {
@@ -46,8 +46,8 @@ public class EntityFieldControllerImpl implements EntityFieldController {
     }
 
     @Override
-    public DataRs getData(UUID entityId, DataRq rq) {
-        val result = entityFieldService.getData(entityFieldMapper.convert(entityId, rq, metadataFactory.create()));
+    public PageRs getData(UUID entityId, DataRq rq) {
+        val result = entityFieldService.getPage(entityFieldMapper.convert(entityId, rq, metadataFactory.create()));
         return dataMapper.convert(result);
     }
 }

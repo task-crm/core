@@ -4,13 +4,18 @@ import static core.tables.TEntityField.T_ENTITY_FIELD;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 import ru.bestclick.exceptionlib.config.ThreadLocalStorage;
+import ru.bestclick.exceptionlib.exception.BusinessException;
 import ru.sop.core.impl.helper.jooq.JsonbHelper;
-import ru.sop.core.impl.model.data.Data;
-import ru.sop.core.impl.model.data.DataResult;
+import ru.sop.core.impl.mapper.record.EntityFieldRecordMapper;
+import ru.sop.core.impl.model.data.Page;
 import ru.sop.core.impl.model.entity.field.EntityField;
+import ru.sop.core.impl.model.entity.field.EntityFieldRecord;
 import ru.sop.core.impl.repository.EntityFieldRepository;
 
 @Repository
@@ -19,6 +24,7 @@ public class EntityFieldRepositoryImpl implements EntityFieldRepository {
 
     private final DSLContext dsl;
     private final JsonbHelper jsonbHelper;
+    private final EntityFieldRecordMapper entityFieldRecordMapper;
 
     @Override
     public void create(EntityField field) {
@@ -29,7 +35,7 @@ public class EntityFieldRepositoryImpl implements EntityFieldRepository {
             .set(T_ENTITY_FIELD.NAME, field.getName())
             .set(T_ENTITY_FIELD.LABEL, field.getLabel())
             .set(T_ENTITY_FIELD.DESCRIPTION, field.getDescription())
-            .set(T_ENTITY_FIELD.TYPE, field.getType().getNumber().shortValue())
+            .set(T_ENTITY_FIELD.TYPE, field.getType().name())
             .set(T_ENTITY_FIELD.SETTINGS, jsonbHelper.toJsonB(field.getSettings()))
             .set(T_ENTITY_FIELD.SYSTEM, field.isSystem())
             .set(T_ENTITY_FIELD.HIDDEN_FROM_USER, field.isHiddenFromUser())
@@ -40,7 +46,7 @@ public class EntityFieldRepositoryImpl implements EntityFieldRepository {
 
             .set(T_ENTITY_FIELD.CREATED_DATE, field.getAudit().getCreatedDate())
             .set(T_ENTITY_FIELD.CREATE_BY, field.getAudit().getCreatedBy())
-            .set(T_ENTITY_FIELD.UPDATE_DATE, field.getAudit().getUpdateDate())
+            .set(T_ENTITY_FIELD.UPDATE_DATE, field.getAudit().getUpdatedDate())
             .set(T_ENTITY_FIELD.UPDATED_BY, field.getAudit().getUpdatedBy())
             .execute();
     }
@@ -58,7 +64,7 @@ public class EntityFieldRepositoryImpl implements EntityFieldRepository {
             .set(T_ENTITY_FIELD.READ_ONLY, field.isReadOnly())
             .set(T_ENTITY_FIELD.REQUIRED, field.isRequired())
 
-            .set(T_ENTITY_FIELD.UPDATE_DATE, field.getAudit().getUpdateDate())
+            .set(T_ENTITY_FIELD.UPDATE_DATE, field.getAudit().getUpdatedDate())
             .set(T_ENTITY_FIELD.UPDATED_BY, field.getAudit().getUpdatedBy())
 
             .where(
@@ -77,15 +83,32 @@ public class EntityFieldRepositoryImpl implements EntityFieldRepository {
     }
 
     @Override
-    public EntityField getById(UUID id) {
-        return dsl.selectFrom(T_ENTITY_FIELD).where(
+    @Nullable
+    public EntityField findOne(UUID id) {
+        val result = dsl.selectFrom(T_ENTITY_FIELD).where(
             T_ENTITY_FIELD.ID.eq(id)
                 .and(T_ENTITY_FIELD.TENANT_ID.eq(ThreadLocalStorage.getTenantId()))
-        ).fetchOneInto(EntityField.class);
+        ).fetchOneInto(EntityFieldRecord.class);
+        return entityFieldRecordMapper.convert(result);
     }
 
     @Override
-    public DataResult getData(UUID entityId, Data data) {
-        return null;
+    public EntityField getOne(UUID id) {
+        val result = findOne(id);
+        if (result == null) {
+            throw new BusinessException("entity.field.not-found");
+        }
+        return result;
+    }
+
+    @Override
+    public Page<EntityField> getPage(Condition condition) {
+        val result = dsl.selectFrom(T_ENTITY_FIELD)
+            .where(condition)
+            .and(T_ENTITY_FIELD.TENANT_ID.eq(ThreadLocalStorage.getTenantId()))
+            .fetchInto(EntityFieldRecord.class);
+        return Page.<EntityField>builder()
+            .data(entityFieldRecordMapper.convert(result))
+            .build();
     }
 }
