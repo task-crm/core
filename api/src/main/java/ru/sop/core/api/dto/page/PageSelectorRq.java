@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,10 +12,10 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Schema(title = "Общий запрос на получение данных")
+@Schema(title = "Объект для выборки записей постранично")
 @JsonPropertyOrder(value = {
     "filters",
-    "sort",
+    "sorts",
     "paging"
 })
 @Value
@@ -23,17 +23,17 @@ import lombok.extern.jackson.Jacksonized;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataRq {
+public class PageSelectorRq {
 
     @Schema(title = "Объекты для фильтрации")
     @Valid
     @Builder.Default
-    Set<FilterDto> filters = Collections.emptySet();
+    Set<FilterRq> filters = Collections.emptySet();
 
     @Schema(title = "Объекты для сортировки")
     @Valid
     @Builder.Default
-    Set<SortDto> sorts = Collections.emptySet();
+    Set<SortRq> sorts = Collections.emptySet();
 
     @Schema(title = "Объекты для пагинации")
     @Valid

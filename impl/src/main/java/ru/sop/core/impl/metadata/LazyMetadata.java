@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import ru.sop.core.impl.model.entity.Entity;
 import ru.sop.core.impl.model.entity.field.EntityField;
 import ru.sop.core.impl.service.EntityFieldService;
@@ -22,7 +23,8 @@ public class LazyMetadata implements Metadata {
     private final Lazy<Map<UUID, Map<String, EntityField>>> fieldsByEntityId = Lazy.of(ConcurrentHashMap::new);
 
     @Override
-    public Entity getEntityById(UUID entityId) {
+    @Nullable
+    public Entity findEntityById(UUID entityId) {
         val entity = entityById.get().get(entityId);
         if (entity != null) {
             return entity;

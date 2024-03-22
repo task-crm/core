@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,17 +7,17 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Schema(title = "Информация об пагинации")
+@Schema(title = "Информация об результате пагинации")
 @Value
 @Jacksonized
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PagingRs {
-    public static final PagingRs EMPTY = PagingRs.builder()
+public class PagingResultRs {
+    public static final PagingResultRs EMPTY = PagingResultRs.builder()
         .currentPage(0L)
         .totalPageAmount(0L)
-        .recordOnPage(0L)
+        .recordsOnPage(0L)
         .totalRecordsAmount(0L)
         .build();
 
@@ -28,7 +28,7 @@ public class PagingRs {
     Long totalPageAmount;
 
     @Schema(title = "Количество записей на странице")
-    Long recordOnPage;
+    Long recordsOnPage;
 
     @Schema(title = "Общее количество записей")
     Long totalRecordsAmount;

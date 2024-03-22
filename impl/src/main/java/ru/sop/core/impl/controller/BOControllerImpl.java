@@ -8,9 +8,10 @@ import ru.sop.core.api.controller.BOController;
 import ru.sop.core.api.dto.bo.BOCreateRq;
 import ru.sop.core.api.dto.bo.BORs;
 import ru.sop.core.api.dto.bo.BOUpdateRq;
-import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.PageRs;
+import ru.sop.core.api.dto.page.PageRs;
+import ru.sop.core.api.dto.page.PageSelectorRq;
 import ru.sop.core.impl.mapper.BOMapper;
+import ru.sop.core.impl.mapper.PageMapper;
 import ru.sop.core.impl.metadata.MetadataFactory;
 import ru.sop.core.impl.service.BOChangeService;
 import ru.sop.core.impl.service.BODeleteService;
@@ -22,18 +23,19 @@ public class BOControllerImpl implements BOController {
     private final BOSearchService boSearchService;
     private final BOChangeService boChangeService;
     private final BODeleteService boDeleteService;
-    private final BOMapper boMapper;
     private final MetadataFactory metadataFactory;
+    private final PageMapper pageMapper;
+    private final BOMapper boMapper;
 
-    //TODO переписать на команду
     @Override
-    public PageRs getData(UUID entityId, DataRq rq) {
-        return boSearchService.getData(entityId, rq);
+    public PageRs getPage(UUID entityId, PageSelectorRq rq) {
+        val result = boSearchService.getPage(metadataFactory.create(), entityId, pageMapper.convert(rq));
+        return pageMapper.convert(result);
     }
 
     @Override
-    public BORs getById(UUID entityId, UUID boId) {
-        return boMapper.convert(boSearchService.getById(boId));
+    public BORs getOne(UUID entityId, UUID boId) {
+        return boMapper.convert(boSearchService.getOne(boId));
     }
 
     @Override
@@ -52,6 +54,6 @@ public class BOControllerImpl implements BOController {
 
     @Override
     public void deleteById(UUID entityId, UUID id) {
-        boDeleteService.deleteById(id);
+        boDeleteService.deleteOne(id);
     }
 }

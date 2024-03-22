@@ -1,9 +1,11 @@
 package ru.sop.core.impl.service.impl;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import ru.bestclick.exceptionlib.util.ValidationUtils;
 import ru.sop.core.impl.model.bo.BOCommand;
@@ -23,10 +25,9 @@ public class BOValidationServiceImpl implements BOValidationService {
 
         val result = Stream.of(bo.getData(), bo.getReferences())
             .flatMap(map -> map.entrySet().stream())
-            .map(entry -> boFieldValidationStrategy.getValidator(
-                fieldByName.get(
-                    fieldByName.get(entry.getKey())).getType()
-            ).validate(entry.getValue()))
+            .filter(entry -> ObjectUtils.isNotEmpty(entry.getValue()))
+            .map(entry -> boFieldValidationStrategy.getValidator(fieldByName.get(entry.getKey()).getType()).validate(entry.getValue()))
+            .filter(Objects::nonNull)
             .collect(Collectors.toSet());
         ValidationUtils.checkResult(result);
     }

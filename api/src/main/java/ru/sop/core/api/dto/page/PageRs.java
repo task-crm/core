@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,5 +24,5 @@ public class PageRs {
     Object data;
 
     @Schema(title = "Информация о пагинации")
-    PagingRs paging;
+    PagingResultRs paging;
 }

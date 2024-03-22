@@ -1,4 +1,4 @@
-package ru.sop.core.impl.model.data;
+package ru.sop.core.impl.model.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +7,7 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 /**
- * Информация об пагинации
+ * Информация об результате пагинации
  */
 @Value
 @Jacksonized
@@ -18,7 +18,7 @@ public class PagingResult {
     public static final PagingResult EMPTY = PagingResult.builder()
         .currentPage(0L)
         .totalPageAmount(0L)
-        .recordOnPage(0L)
+        .recordsOnPage(0L)
         .totalRecordsAmount(0L)
         .build();
 
@@ -35,7 +35,7 @@ public class PagingResult {
     /**
      * Количество записей на странице
      */
-    Long recordOnPage;
+    Long recordsOnPage;
 
     /**
      * Общее количество записей

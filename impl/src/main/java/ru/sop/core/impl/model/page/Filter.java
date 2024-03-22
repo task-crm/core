@@ -1,4 +1,4 @@
-package ru.sop.core.impl.model.data;
+package ru.sop.core.impl.model.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-import ru.sop.core.api.dto.data.Operation;
+import ru.sop.core.api.dto.page.Operation;
 
 /**
  * Объект для фильтрации значений

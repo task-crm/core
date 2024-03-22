@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

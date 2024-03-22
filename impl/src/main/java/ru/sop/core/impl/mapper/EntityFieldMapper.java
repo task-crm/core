@@ -3,18 +3,17 @@ package ru.sop.core.impl.mapper;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.sop.core.api.dto.data.DataRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldCreateRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldUpdateRq;
+import ru.sop.core.api.dto.page.PageSelectorRq;
 import ru.sop.core.impl.config.MapstructConfig;
-import ru.sop.core.impl.metadata.Metadata;
 import ru.sop.core.impl.model.entity.field.EntityField;
 import ru.sop.core.impl.model.entity.field.EntityFieldGetCmd;
 
 @Mapper(
     config = MapstructConfig.class,
-    uses = DataMapper.class
+    uses = PageMapper.class
 )
 public interface EntityFieldMapper {
 
@@ -30,5 +29,5 @@ public interface EntityFieldMapper {
 
     EntityFieldRs convert(EntityField field);
 
-    EntityFieldGetCmd convert(UUID entityId, DataRq data, Metadata metadata);
+    EntityFieldGetCmd convert(UUID entityId, PageSelectorRq pageSelector);
 }

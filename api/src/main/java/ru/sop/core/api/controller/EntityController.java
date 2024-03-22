@@ -13,8 +13,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.sop.core.api.dto.entity.EntityCreateRq;
 import ru.sop.core.api.dto.entity.EntityRs;
 import ru.sop.core.api.dto.entity.EntityUpdateRq;
+import ru.sop.core.api.dto.page.PageRs;
+import ru.sop.core.api.dto.page.PageSelectorRq;
 
 public interface EntityController {
+
+    @GetMapping("v1/entity/{id}")
+    EntityRs getById(@PathVariable("id") UUID id);
+
+    @PostMapping("v1/entity/page")
+    PageRs getPage(@RequestBody @Valid PageSelectorRq rq);
+
     @PostMapping("v1/entity")
     @ResponseStatus(HttpStatus.CREATED)
     EntityRs create(@RequestBody @Valid EntityCreateRq entity);
@@ -25,7 +34,4 @@ public interface EntityController {
 
     @DeleteMapping("v1/entity/{id}")
     void deleteById(@PathVariable("id") UUID id);
-
-    @GetMapping("v1/entity/{id}")
-    EntityRs getById(@PathVariable("id") UUID id);
 }

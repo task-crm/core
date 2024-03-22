@@ -12,7 +12,7 @@ public class BODeleteServiceImpl implements BODeleteService {
     private final BORepository boRepository;
 
     @Override
-    public void deleteById(UUID id) {
-        boRepository.deleteById(id);
+    public void deleteOne(UUID id) {
+        boRepository.deleteOne(id);
     }
 }

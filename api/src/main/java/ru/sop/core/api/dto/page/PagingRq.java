@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,10 +10,10 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Schema(title = "Объект для пагинации значений")
+@Schema(title = "Объект для пагинации записей")
 @JsonPropertyOrder(value = {
-    "pageNum",
-    "itemsPerPage"
+    "currentPage",
+    "recordsOnPage"
 })
 @Value
 @Jacksonized
@@ -22,23 +22,23 @@ import lombok.extern.jackson.Jacksonized;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PagingRq {
     public static final PagingRq UNPAGED = PagingRq.builder()
-        .pageNum(0L)
-        .itemsPerPage(Long.MAX_VALUE)
+        .currentPage(0L)
+        .recordsOnPage(Long.MAX_VALUE)
         .build();
 
     public static final PagingRq ONE_ITEM = PagingRq.builder()
-        .pageNum(0L)
-        .itemsPerPage(1L)
+        .currentPage(0L)
+        .recordsOnPage(1L)
         .build();
 
 
     @Schema(title = "Номер запрашиваемой страницы")
     @NotNull
     @PositiveOrZero
-    Long pageNum;
+    Long currentPage;
 
-    @Schema(title = "Количество элементов на странице")
+    @Schema(title = "Количество записей на странице")
     @NotNull
     @PositiveOrZero
-    Long itemsPerPage;
+    Long recordsOnPage;
 }

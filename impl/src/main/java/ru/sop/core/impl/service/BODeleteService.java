@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface BODeleteService {
 
-    void deleteById(UUID id);
+    void deleteOne(UUID id);
 }

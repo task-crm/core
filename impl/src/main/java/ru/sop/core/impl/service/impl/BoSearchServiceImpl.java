@@ -3,9 +3,10 @@ package ru.sop.core.impl.service.impl;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.PageRs;
+import ru.sop.core.impl.metadata.Metadata;
 import ru.sop.core.impl.model.bo.BO;
+import ru.sop.core.impl.model.page.Page;
+import ru.sop.core.impl.model.page.PageSelector;
 import ru.sop.core.impl.repository.BORepository;
 import ru.sop.core.impl.service.BOSearchService;
 
@@ -15,12 +16,12 @@ public class BoSearchServiceImpl implements BOSearchService {
     private final BORepository boRepository;
 
     @Override
-    public PageRs getData(UUID entityId, DataRq rq) {
-        return null;
+    public Page<BO> getPage(Metadata metadata, UUID entityId, PageSelector pageSelector) {
+        return boRepository.getPage(pageSelector);
     }
 
     @Override
-    public BO getById(UUID id) {
-        return boRepository.getById(id);
+    public BO getOne(UUID id) {
+        return boRepository.getOne(id);
     }
 }

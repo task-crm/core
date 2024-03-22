@@ -10,13 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.PageRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldCreateRq;
 import ru.sop.core.api.dto.entity.field.EntityFieldRs;
 import ru.sop.core.api.dto.entity.field.EntityFieldUpdateRq;
+import ru.sop.core.api.dto.page.PageRs;
+import ru.sop.core.api.dto.page.PageSelectorRq;
 
 public interface EntityFieldController {
+
+    @GetMapping("v1/entity/{entityId}/field/{fieldId}")
+    EntityFieldRs getOne(@PathVariable("entityId") UUID entityId,
+                         @PathVariable("fieldId") UUID fieldId);
+
+    @PostMapping("v1/entity/{entityId}/field/page")
+    PageRs getPage(@PathVariable("entityId") UUID entityId,
+                   @RequestBody @Valid PageSelectorRq rq);
+
     @PostMapping("v1/entity/{entityId}/field")
     @ResponseStatus(HttpStatus.CREATED)
     EntityFieldRs create(@PathVariable("entityId") UUID entityId,
@@ -30,12 +39,4 @@ public interface EntityFieldController {
     @DeleteMapping("v1/entity/{entityId}/field/{fieldId}")
     void deleteById(@PathVariable("entityId") UUID entityId,
                     @PathVariable("fieldId") UUID fieldId);
-
-    @GetMapping("v1/entity/{entityId}/field/{fieldId}")
-    EntityFieldRs getById(@PathVariable("entityId") UUID entityId,
-                          @PathVariable("fieldId") UUID fieldId);
-
-    @GetMapping("v1/entity/{entityId}/field/data")
-    PageRs getData(@PathVariable("entityId") UUID entityId,
-                   @RequestBody DataRq rq);
 }

@@ -1,4 +1,4 @@
-package ru.sop.core.api.dto.data;
+package ru.sop.core.api.dto.page;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,14 +25,14 @@ import lombok.extern.jackson.Jacksonized;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FilterDto {
+public class FilterRq {
     private static final String FIELD_NAME_REGEX = "^[a-zA-Z0-9.$:^_]+";
 
     @Schema(title = "Название поля")
     @NotBlank
     String field;
 
-    @Schema(title = "Название поля для операций с двумя полями(OVERLAPS)")
+    @Schema(title = "Пока нет реализации. Название поля для операций с двумя полями(OVERLAPS)")
     String secondField;
 
     @Schema(title = "Тип операции")

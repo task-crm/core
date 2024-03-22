@@ -17,7 +17,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
-import ru.sop.core.impl.model.data.Filter;
+import ru.sop.core.impl.model.page.Filter;
 
 @RequiredArgsConstructor
 public class SpecificationBuilder {

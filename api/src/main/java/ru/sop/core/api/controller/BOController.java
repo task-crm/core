@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.sop.core.api.dto.bo.BOCreateRq;
 import ru.sop.core.api.dto.bo.BORs;
 import ru.sop.core.api.dto.bo.BOUpdateRq;
-import ru.sop.core.api.dto.data.DataRq;
-import ru.sop.core.api.dto.data.PageRs;
+import ru.sop.core.api.dto.page.PageRs;
+import ru.sop.core.api.dto.page.PageSelectorRq;
 
 public interface BOController {
 
-    @PostMapping("v1/entity/{entityId}/bo/data")
-    PageRs getData(@PathVariable("entityId") UUID entityId,
-                   @RequestBody @Valid @Nonnull DataRq rq);
+    @PostMapping("v1/entity/{entityId}/bo/page")
+    PageRs getPage(@PathVariable("entityId") UUID entityId,
+                   @RequestBody @Valid @Nonnull PageSelectorRq rq);
 
     @GetMapping("v1/entity/{entityId}/bo/{BoId}")
-    BORs getById(@PathVariable("entityId") UUID entityId,
-                 @PathVariable("BoId") UUID boId);
+    BORs getOne(@PathVariable("entityId") UUID entityId,
+                @PathVariable("BoId") UUID boId);
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("v1/entity/{entityId}/bo")
